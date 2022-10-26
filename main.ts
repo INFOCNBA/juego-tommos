@@ -4,19 +4,24 @@ input.onButtonPressed(Button.A, function () {
 input.onButtonPressed(Button.B, function () {
     sprite.move(1)
 })
+let puntos = 0
+let bala2: game.LedSprite = null
 let bala: game.LedSprite = null
+let fila_de_inicio = 0
 let sprite: game.LedSprite = null
 let vida = 3
-let puntos = 0
 sprite = game.createSprite(1, 3)
 basic.forever(function () {
     basic.pause(3000)
     while (game.isRunning()) {
-        bala = game.createSprite(0, randint(0, 4))
-        for (let index = 0; index < 4; index++) {
+        fila_de_inicio = randint(0, 4)
+        bala = game.createSprite(1, fila_de_inicio)
+        bala2 = game.createSprite(0, (fila_de_inicio + 3) % 5)
+        for (let index = 0; index < 5; index++) {
             basic.pause(500)
             bala.move(1)
-            if (sprite.isTouching(bala)) {
+            bala2.move(1)
+            if (sprite.isTouching(bala) || sprite.isTouching(bala2)) {
                 vida += -1
                 music.playMelody("F - B - - - - - ", 500)
             } else {
@@ -30,5 +35,7 @@ basic.forever(function () {
                 game.gameOver()
             }
         }
+        bala.delete()
+        bala2.delete()
     }
 })
